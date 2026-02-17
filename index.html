@@ -464,6 +464,18 @@
             opacity: 0; animation: fade-in 0.7s ease 2.4s forwards;
         }
 
+        /* Mute toggle */
+        .mute-btn {
+            position: fixed; top: 20px; right: 20px; z-index: 200;
+            width: 40px; height: 40px; border-radius: 50%;
+            background: var(--card); border: 1px solid var(--card-border);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 18px; cursor: pointer;
+            transition: all 0.2s ease;
+            opacity: 0; animation: fade-in 0.4s ease 0.5s forwards;
+        }
+        .mute-btn:active { transform: scale(0.9); }
+
         .reveal-thanks {
             font-size: 12px; color: var(--gray-dark); opacity: 0;
             animation: fade-in 0.5s ease 3.2s forwards;
@@ -667,6 +679,7 @@
      ============================================================ -->
 <div id="reveal" class="page">
     <div class="reveal-bg"></div>
+    <button class="mute-btn" id="muteBtn" onclick="toggleMute()">&#128266;</button>
     <div class="reveal-inner">
         <div class="reveal-tag">&#10022; YOUR SHER &#10022;</div>
 
@@ -689,63 +702,63 @@ const labels = {
     5: 'Love it!'
 };
 
-// ===== Hindi/Urdu Shers (Funny, Travel-themed) =====
+// ===== Hindi/Urdu Shers (Funny, Travel-themed, RHYMING) =====
 const shers = [
     {
         lines: [
-            'Safar mein bag naya tha, josh bhi behad tha,',
-            'Airport pe weight dekha toh hosh udd gaye.'
+            'Bag naya tha, josh tha, nikle thay udne ko,',
+            'Weight dekha airport pe \u2014 zameen pe aa gaye rone ko.'
         ],
-        meaning: 'The bag was new, the excitement immense \u2014 at the airport, the weight blew my sense!'
+        meaning: 'New bag, big dreams, ready to fly \u2014 saw the weight at the airport, wanted to cry.'
     },
     {
         lines: [
-            'Hawai ka ticket jab sasta mila yaar,',
-            'Passport expire nikla \u2014 yeh kaisa safar!'
+            'Sasta ticket mila toh socha ab toh maza aayega,',
+            'Passport expire nikla \u2014 bas sapna reh jaayega.'
         ],
-        meaning: 'Got a cheap flight ticket, felt like a king \u2014 passport expired, what a sting!'
+        meaning: 'Cheap ticket in hand, thought life was grand \u2014 passport expired, trip was canned.'
     },
     {
         lines: [
-            'Bag pack karke nikle thay duniya ghoomne,',
-            'Charger bhool gaye \u2014 ab selfie kaun le?'
+            'Duniya ghoomne nikle thay, bag mein bhara sab kuch,',
+            'Charger bhool gaye ghar pe \u2014 ab phone mara ab kuch?'
         ],
-        meaning: 'Packed my bags to roam the world with glee \u2014 forgot the charger, who\'ll take the selfie?'
+        meaning: 'Set off to roam the world, bag packed with care \u2014 forgot the charger at home, dead phone in despair.'
     },
     {
         lines: [
-            'Scapia se aaya saamaan, dil khush hua,',
-            'Review deke sher bhi suna \u2014 maza aa gaya!'
+            'Scapia ka bag aaya, itna solid itna tight,',
+            'Biwi boli isko le jaa, mujhe chhod de \u2014 alright.'
         ],
-        meaning: 'Scapia delivered goods, heart was singing \u2014 gave a review, got a sher, what a feeling!'
+        meaning: 'Scapia\'s bag arrived, so solid, so tight \u2014 wife said take the bag, leave me, alright.'
     },
     {
         lines: [
-            'Travel ka shauq tha, budget nahi tha saath,',
-            'Scapia ne kaha fikar na kar, thaam mera haath.'
+            'Goa mein baarish aayi, bag bhiga nahi ekdum,',
+            'Main bhiga, kapde bhige, bag bola \u2014 I\'m premium.'
         ],
-        meaning: 'Had the travel bug, but budget was tight \u2014 Scapia said don\'t worry, I\'ll make it right!'
+        meaning: 'Rain hit Goa, the bag stayed bone dry \u2014 I was soaked, clothes drenched, bag said "I\'m fly."'
     },
     {
         lines: [
-            'Goa ke beach pe baitha tha sukoon se,',
-            'Bag ka zipper toota toh nikle June se!'
+            'Solo trip pe nikla tha sukoon dhundhne yaar,',
+            'Mummy ka phone aaya \u2014 khaana khaya ki nahi, do baar.'
         ],
-        meaning: 'Sitting on Goa beach, peaceful and free \u2014 bag zipper broke, out came June\'s laundry!'
+        meaning: 'Went solo to find some peace and rest \u2014 mom called twice: "Did you eat?" \u2014 she knows best.'
     },
     {
         lines: [
-            'Solo trip pe nikla tha chain dhundhne,',
-            'Mummy teen baar call ki \u2014 chain mar gaya.'
+            'Light travel karo bola sabne mujhko baar baar,',
+            'Teen bag leke airport gaya \u2014 lagi fine hazaar.'
         ],
-        meaning: 'Went solo to find peace of mind \u2014 mom called thrice, peace left behind.'
+        meaning: 'Everyone said travel light, don\'t overpack \u2014 three bags at the airport, wallet under attack.'
     },
     {
         lines: [
-            'Paanch star diye bag ko, baarish mein bhi jeeta,',
-            'Itinerary nahi chala \u2014 par bag ne dil jeeta.'
+            'Review de diya humne, sher bhi sun liya,',
+            'Ab Scapia bole \u2014 waah bhai, dil jeet liya!'
         ],
-        meaning: 'Five stars for the bag, it survived the rain \u2014 itinerary flopped, but the bag felt no pain.'
+        meaning: 'Gave the review, heard the sher too \u2014 Scapia said: waah bhai, you\'re our crew!'
     }
 ];
 
@@ -869,6 +882,77 @@ function submitReview() {
     navigateTo('reveal');
 }
 
+// ===== AUDIO SYSTEM (Web Audio API — no external files) =====
+let audioCtx = null;
+let isMuted = false;
+
+function getAudioCtx() {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    return audioCtx;
+}
+
+function toggleMute() {
+    isMuted = !isMuted;
+    document.getElementById('muteBtn').textContent = isMuted ? '\u{1F507}' : '\u{1F50A}';
+}
+
+// Generate a clap sound using noise burst
+function playClap() {
+    if (isMuted) return;
+    const ctx = getAudioCtx();
+    const bufferSize = ctx.sampleRate * 0.15;
+    const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+    const data = buffer.getChannelData(0);
+
+    for (let i = 0; i < bufferSize; i++) {
+        // Sharp attack, fast decay noise
+        const env = Math.exp(-i / (ctx.sampleRate * 0.02));
+        data[i] = (Math.random() * 2 - 1) * env;
+    }
+
+    const src = ctx.createBufferSource();
+    src.buffer = buffer;
+
+    // Bandpass filter to make it sound like a clap
+    const filter = ctx.createBiquadFilter();
+    filter.type = 'bandpass';
+    filter.frequency.value = 2000;
+    filter.Q.value = 0.7;
+
+    const gain = ctx.createGain();
+    gain.gain.value = 0.6;
+
+    src.connect(filter);
+    filter.connect(gain);
+    gain.connect(ctx.destination);
+    src.start();
+}
+
+// Generate crowd claps (multiple offset claps)
+function playCrowdClaps() {
+    if (isMuted) return;
+    for (let i = 0; i < 5; i++) {
+        setTimeout(() => playClap(), i * 80 + Math.random() * 50);
+    }
+}
+
+// Speak "Waah Waah" using SpeechSynthesis
+function speakWaahWaah() {
+    if (isMuted) return;
+    if ('speechSynthesis' in window) {
+        const utter = new SpeechSynthesisUtterance('Waah Waah!');
+        utter.rate = 0.9;
+        utter.pitch = 1.1;
+        utter.volume = 0.8;
+        // Try to find a Hindi voice, else use default
+        const voices = speechSynthesis.getVoices();
+        const hindiVoice = voices.find(v => v.lang.startsWith('hi'));
+        if (hindiVoice) utter.voice = hindiVoice;
+        speechSynthesis.speak(utter);
+    }
+}
+
 // ===== Waah Waah =====
 let waahN = 0;
 function waahWaah() {
@@ -876,6 +960,11 @@ function waahWaah() {
     const btn = document.getElementById('waahBtn');
     btn.classList.add('clapped');
 
+    // Play sounds
+    playCrowdClaps();
+    setTimeout(() => speakWaahWaah(), 200);
+
+    // Particles
     const emojis = ['\u{1F44F}', '\u{1F389}', '\u2728', '\u{1F31F}', '\u{1F4AB}', '\u{1F525}', '\u2764\uFE0F', '\u{1F3A4}'];
     for (let i = 0; i < 10; i++) {
         const p = document.createElement('div');
@@ -890,6 +979,12 @@ function waahWaah() {
 
     setTimeout(() => btn.classList.remove('clapped'), 300);
     if (waahN >= 3) btn.textContent = 'Bahut Khoob! \u{1F389}';
+}
+
+// Preload voices for SpeechSynthesis
+if ('speechSynthesis' in window) {
+    speechSynthesis.getVoices();
+    speechSynthesis.onvoiceschanged = () => speechSynthesis.getVoices();
 }
 </script>
 </body>
