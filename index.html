@@ -1,0 +1,896 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Scapia - Mushaira Review</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+        :root {
+            --black: #0A0A0A;
+            --dark: #111111;
+            --card: #171717;
+            --card-border: rgba(255,255,255,0.07);
+            --gold: #D4A843;
+            --gold-light: #E8C96A;
+            --gold-dim: rgba(212,168,67,0.12);
+            --orange: #E8734A;
+            --orange-glow: rgba(232,115,74,0.15);
+            --cream: #FFF8E7;
+            --white: #FFFFFF;
+            --gray: #777777;
+            --gray-light: #AAAAAA;
+            --gray-dark: #444444;
+            --star-empty: #2A2A2A;
+            --star-filled: #F5C518;
+            --red: #FF4D4D;
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #EFF3F7;
+            color: var(--white);
+            min-height: 100dvh;
+            overflow-x: hidden;
+            max-width: 430px;
+            margin: 0 auto;
+        }
+
+        /* ===== PAGE SYSTEM ===== */
+        .page {
+            display: none;
+            min-height: 100dvh;
+            position: relative;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        .page.active { display: flex; flex-direction: column; opacity: 1; }
+        .page.fade-out { opacity: 0; }
+
+        /* ============================================================
+           PAGE 1: SCAPIA STORE HOME (Light theme)
+           ============================================================ */
+        #home {
+            background: #EFF3F7;
+            color: #1A1A2E;
+            overflow-y: auto;
+        }
+
+        /* Store nav */
+        .store-nav {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 20px 10px;
+        }
+        .store-nav-btn {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: #fff; border: none; display: flex;
+            align-items: center; justify-content: center;
+            font-size: 18px; color: #1A1A2E; cursor: pointer;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+        }
+        .store-logo {
+            font-size: 16px; font-weight: 700; color: #1A1A2E;
+            position: absolute; left: 50%; transform: translateX(-50%);
+        }
+        .store-logo span { color: #E8734A; font-weight: 800; }
+
+        /* Banner img */
+        .store-hero {
+            margin: 0 20px 14px; height: 100px; border-radius: 16px;
+            background: linear-gradient(135deg, #FF8C6B 0%, #FF6B8A 50%, #A855F7 100%);
+            display: flex; align-items: flex-end; justify-content: center;
+            overflow: hidden;
+        }
+        .store-hero-emoji { font-size: 60px; margin-bottom: -6px; }
+
+        /* Search */
+        .store-search {
+            margin: 0 20px 20px; background: #fff; border-radius: 12px;
+            padding: 13px 16px; display: flex; align-items: center;
+            justify-content: space-between; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .store-search-ph { font-size: 14px; color: #9CA3AF; }
+        .store-search-ic { font-size: 16px; color: #9CA3AF; }
+
+        /* Section header */
+        .s-section { padding: 0 20px; margin-bottom: 22px; }
+        .s-head { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+        .s-icon {
+            width: 30px; height: 30px; border-radius: 8px;
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 14px;
+        }
+        .s-title { font-size: 15px; font-weight: 700; color: #1A1A2E; }
+        .s-sub { font-size: 12px; color: #6B7280; margin-left: 40px; margin-bottom: 14px; }
+
+        /* Category grid */
+        .cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px 10px; }
+        .cat-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+        .cat-circle {
+            width: 60px; height: 60px; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 26px;
+        }
+        .cc1 { background: linear-gradient(135deg, #1E3A5F, #2E5B8C); }
+        .cc2 { background: linear-gradient(135deg, #F5A623, #F7C948); }
+        .cc3 { background: linear-gradient(135deg, #E84393, #FD79A8); }
+        .cc4 { background: linear-gradient(135deg, #55E6C1, #7DCEA0); }
+        .cc5 { background: linear-gradient(135deg, #E17055, #FDCB6E); }
+        .cc6 { background: linear-gradient(135deg, #A29BFE, #6C5CE7); }
+        .cc7 { background: linear-gradient(135deg, #FD79A8, #E84393); }
+        .cc8 { background: linear-gradient(135deg, #636E72, #2D3436); }
+        .cat-name { font-size: 11px; color: #6B7280; text-align: center; }
+
+        /* ===== MUSHAIRA DISCOVERY BANNER (dark inside light page) ===== */
+        .mushaira-banner {
+            margin: 6px 20px 24px;
+            background: var(--black);
+            border-radius: 20px;
+            padding: 24px 22px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .mushaira-banner:active { transform: scale(0.98); }
+
+        .mushaira-banner-bg {
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 80% 50%, rgba(212,168,67,0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 20% 80%, rgba(232,115,74,0.08) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        .mb-content { flex: 1; z-index: 1; }
+        .mb-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px; font-weight: 700; color: var(--cream);
+            line-height: 1.35; margin-bottom: 6px;
+        }
+        .mb-sub {
+            font-size: 12px; color: var(--gray); line-height: 1.4; margin-bottom: 14px;
+        }
+        .mb-cta {
+            display: inline-block;
+            background: var(--gold); color: var(--black);
+            font-size: 13px; font-weight: 700; padding: 10px 24px;
+            border-radius: 24px; border: none; cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            transition: transform 0.15s ease;
+        }
+        .mb-cta:active { transform: scale(0.95); }
+
+        .mb-mic {
+            font-size: 52px; z-index: 1; flex-shrink: 0;
+            animation: mic-bob 3s ease-in-out infinite;
+        }
+        @keyframes mic-bob {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-4px) rotate(3deg); }
+        }
+
+        /* Bottom peek */
+        .store-peek { padding: 0 20px 40px; }
+
+        /* ============================================================
+           PAGE 2: REVIEW (Mushaira themed — dark/gold/orange)
+           ============================================================ */
+        #review {
+            background: var(--black);
+            padding-bottom: 110px;
+        }
+
+        /* Top bar */
+        .review-topbar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 16px 20px 0;
+        }
+        .btn-close {
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--card); border: 1px solid var(--card-border);
+            color: var(--white); font-size: 20px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer;
+        }
+
+        /* Hero — mic + prompt */
+        .review-hero {
+            text-align: center; padding: 24px 24px 20px;
+        }
+        .review-mic { font-size: 60px; margin-bottom: 16px; display: inline-block; }
+        .review-hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px; font-weight: 700; color: var(--cream);
+            line-height: 1.35; margin-bottom: 6px;
+        }
+        .review-hero-sub {
+            font-size: 13px; color: var(--gray); line-height: 1.4;
+        }
+
+        /* Product card */
+        .product-card {
+            margin: 0 20px 28px;
+            background: var(--card); border-radius: 16px;
+            padding: 14px 16px; display: flex; gap: 14px;
+            align-items: center; border: 1px solid var(--card-border);
+        }
+        .product-icon {
+            width: 52px; height: 52px; border-radius: 12px;
+            background: linear-gradient(135deg, #222, #1a1a1a);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 26px; flex-shrink: 0;
+        }
+        .product-details { flex: 1; min-width: 0; }
+        .product-name { font-size: 14px; font-weight: 600; color: var(--white); margin-bottom: 2px; }
+        .product-meta { font-size: 12px; color: var(--gray); }
+
+        /* ===== Rating Cards ===== */
+        .ratings-area { padding: 0 20px; margin-bottom: 28px; }
+        .ratings-title {
+            font-size: 17px; font-weight: 700; color: var(--white); margin-bottom: 4px;
+        }
+        .ratings-sub {
+            font-size: 13px; color: var(--gray); margin-bottom: 18px;
+        }
+
+        .rating-cards { display: flex; flex-direction: column; gap: 14px; }
+
+        .r-card {
+            background: var(--card); border-radius: 16px;
+            padding: 18px 20px; border: 1px solid var(--card-border);
+            transition: border-color 0.3s ease, background 0.3s ease;
+        }
+        .r-card.rated {
+            border-color: rgba(212,168,67,0.2);
+            background: rgba(212,168,67,0.03);
+        }
+        .r-card-top {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px;
+        }
+        .r-card-label { font-size: 15px; font-weight: 600; color: var(--white); }
+        .r-card-icon { font-size: 20px; }
+
+        .stars {
+            display: flex; gap: 6px;
+        }
+        .star {
+            font-size: 32px; cursor: pointer;
+            color: var(--star-empty);
+            transition: color 0.15s ease, transform 0.15s ease;
+            -webkit-user-select: none; user-select: none; line-height: 1;
+        }
+        .star.filled { color: var(--star-filled); }
+        .star.pop { animation: pop 0.3s ease; }
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+        .star:active { transform: scale(0.85); }
+
+        .r-feedback {
+            font-size: 12px; color: var(--gold); margin-top: 10px;
+            min-height: 16px; font-weight: 500;
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px; background: var(--card-border);
+            margin: 4px 20px 24px;
+        }
+
+        /* ===== Optional Sections ===== */
+        .opt-section { padding: 0 20px; margin-bottom: 24px; }
+        .opt-row {
+            display: flex; align-items: center; gap: 8px; margin-bottom: 12px;
+        }
+        .opt-label { font-size: 16px; font-weight: 700; color: var(--white); }
+        .opt-tag {
+            font-size: 10px; color: var(--gray); font-weight: 500;
+            background: rgba(255,255,255,0.06); padding: 3px 8px; border-radius: 4px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .opt-desc {
+            font-size: 13px; color: var(--gray); margin-bottom: 14px; line-height: 1.4;
+        }
+
+        /* Textarea */
+        .review-ta {
+            width: 100%; min-height: 100px;
+            background: var(--card); border: 1px solid var(--card-border);
+            border-radius: 14px; padding: 16px;
+            color: var(--white); font-family: 'Inter', sans-serif;
+            font-size: 14px; resize: none; outline: none;
+            transition: border-color 0.3s ease; line-height: 1.6;
+        }
+        .review-ta::placeholder { color: rgba(255,255,255,0.15); }
+        .review-ta:focus { border-color: rgba(212,168,67,0.3); }
+
+        .ta-footer {
+            display: flex; justify-content: space-between; align-items: flex-start;
+            margin-top: 10px; gap: 8px;
+        }
+        .hint-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+        .hint-chip {
+            font-size: 11px; color: var(--gray-light); background: rgba(255,255,255,0.06);
+            padding: 5px 10px; border-radius: 20px; cursor: pointer;
+            border: none; font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+        .hint-chip:active { background: var(--gold-dim); color: var(--gold); }
+        .char-ct { font-size: 11px; color: var(--gray-dark); white-space: nowrap; padding-top: 5px; }
+
+        /* Upload */
+        .up-row {
+            display: flex; gap: 12px; overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .up-row::-webkit-scrollbar { display: none; }
+
+        .up-trigger {
+            min-width: 76px; height: 76px; border-radius: 14px;
+            border: 1.5px dashed rgba(212,168,67,0.3);
+            background: rgba(212,168,67,0.04);
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 4px; cursor: pointer;
+            transition: all 0.2s ease; flex-shrink: 0;
+        }
+        .up-trigger:active { background: rgba(212,168,67,0.1); border-color: var(--gold); }
+        .up-trigger-icon { font-size: 22px; }
+        .up-trigger-txt { font-size: 10px; color: var(--gray); }
+
+        .thumb-w { position: relative; flex-shrink: 0; }
+        .thumb-i {
+            width: 76px; height: 76px; border-radius: 14px; object-fit: cover;
+        }
+        .thumb-rm {
+            position: absolute; top: -6px; right: -6px;
+            width: 22px; height: 22px; border-radius: 50%;
+            background: var(--red); color: white; border: 2px solid var(--black);
+            font-size: 11px; display: flex; align-items: center;
+            justify-content: center; cursor: pointer;
+        }
+
+        .hidden { display: none; }
+
+        /* Submit bar */
+        .submit-bar {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+            width: 100%; max-width: 430px;
+            padding: 16px 20px;
+            padding-bottom: max(16px, env(safe-area-inset-bottom));
+            background: linear-gradient(to top, var(--black) 70%, transparent);
+            z-index: 100;
+        }
+        .btn-submit {
+            width: 100%; padding: 18px; border-radius: 60px; border: none;
+            font-size: 16px; font-weight: 700; font-family: 'Inter', sans-serif;
+            cursor: pointer; transition: all 0.3s ease;
+            background: #222; color: #555; pointer-events: none;
+            letter-spacing: 0.3px;
+        }
+        .btn-submit.enabled {
+            background: var(--gold); color: var(--black); pointer-events: all;
+        }
+        .btn-submit.enabled:active { transform: scale(0.97); }
+
+        /* ============================================================
+           PAGE 3: SHER REVEAL
+           ============================================================ */
+        #reveal {
+            background: var(--black); color: var(--white);
+            justify-content: center; align-items: center;
+            overflow: hidden;
+        }
+
+        .reveal-bg {
+            position: absolute; inset: 0;
+            background:
+                radial-gradient(ellipse at 50% 20%, rgba(212,168,67,0.08) 0%, transparent 55%),
+                radial-gradient(ellipse at 50% 85%, rgba(232,115,74,0.05) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        .reveal-inner {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; gap: 40px; padding: 48px 28px;
+            z-index: 1; text-align: center; width: 100%;
+        }
+
+        .reveal-tag {
+            font-size: 11px; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--gold); opacity: 0.5;
+        }
+
+        .sher-box {
+            display: flex; flex-direction: column; gap: 20px; align-items: center;
+            opacity: 0; transform: translateY(20px);
+            animation: sher-in 0.8s ease 0.3s forwards;
+        }
+        @keyframes sher-in { to { opacity: 1; transform: translateY(0); } }
+
+        .sher-line {
+            font-family: 'Playfair Display', serif;
+            font-size: 21px; font-style: italic;
+            color: var(--cream); line-height: 1.6;
+            max-width: 320px;
+            opacity: 0; animation: fade-in 0.8s ease forwards;
+        }
+        .sher-line:nth-child(1) { animation-delay: 0.6s; }
+        .sher-line:nth-child(2) { animation-delay: 1.8s; }
+
+        .sher-sep {
+            width: 36px; height: 1px; background: var(--gold);
+            opacity: 0; animation: fade-in 0.5s ease 1.3s forwards;
+        }
+        @keyframes fade-in { to { opacity: 1; } }
+
+        /* Waah Waah */
+        .btn-waah {
+            background: none; border: 2px solid var(--orange);
+            color: var(--orange); padding: 16px 48px;
+            font-size: 20px; font-weight: 700; border-radius: 60px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease; opacity: 0;
+            animation: fade-in 0.5s ease 2.6s forwards;
+        }
+        .btn-waah:active { transform: scale(0.92); background: var(--orange-glow); }
+        .btn-waah.clapped { background: var(--orange); color: var(--white); }
+
+        .particle {
+            position: fixed; pointer-events: none; font-size: 24px;
+            z-index: 999; animation: fly-up 1.5s ease forwards;
+        }
+        @keyframes fly-up {
+            0% { opacity: 1; transform: translateY(0) scale(1) rotate(0deg); }
+            100% { opacity: 0; transform: translateY(-220px) scale(0.4) rotate(25deg); }
+        }
+
+        .sher-meaning {
+            font-size: 13px; color: var(--gray); font-style: italic;
+            line-height: 1.5; max-width: 300px;
+            opacity: 0; animation: fade-in 0.7s ease 2.4s forwards;
+        }
+
+        .reveal-thanks {
+            font-size: 12px; color: var(--gray-dark); opacity: 0;
+            animation: fade-in 0.5s ease 3.2s forwards;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ============================================================
+     PAGE 1: SCAPIA STORE HOME (Light) + Mushaira Banner
+     ============================================================ -->
+<div id="home" class="page active">
+
+    <!-- Nav -->
+    <div class="store-nav" style="position:relative;">
+        <button class="store-nav-btn">&#8592;</button>
+        <div class="store-logo">scapia <span>shop</span></div>
+        <button class="store-nav-btn">&#128722;</button>
+    </div>
+
+    <!-- Hero banner -->
+    <div class="store-hero">
+        <span class="store-hero-emoji">&#128717;&#65039;</span>
+    </div>
+
+    <!-- Search -->
+    <div class="store-search">
+        <span class="store-search-ph">Shop product by category</span>
+        <span class="store-search-ic">&#128269;</span>
+    </div>
+
+    <!-- Top Picks -->
+    <div class="s-section">
+        <div class="s-head">
+            <div class="s-icon">&#127873;</div>
+            <div class="s-title">Top Picks</div>
+        </div>
+        <div class="s-sub">Tap into exclusive deals just for you</div>
+        <div class="cat-grid">
+            <div class="cat-item"><div class="cat-circle cc1">&#129509;</div><span class="cat-name">Jackets</span></div>
+            <div class="cat-item"><div class="cat-circle cc2">&#129510;</div><span class="cat-name">Socks</span></div>
+            <div class="cat-item"><div class="cat-circle cc3">&#127890;</div><span class="cat-name">Backpacks</span></div>
+            <div class="cat-item"><div class="cat-circle cc4">&#127911;</div><span class="cat-name">Headphones</span></div>
+            <div class="cat-item"><div class="cat-circle cc5">&#129523;</div><span class="cat-name">Luggages</span></div>
+            <div class="cat-item"><div class="cat-circle cc6">&#128092;</div><span class="cat-name">Handbags</span></div>
+            <div class="cat-item"><div class="cat-circle cc7">&#128092;</div><span class="cat-name">Fanny Pack</span></div>
+            <div class="cat-item"><div class="cat-circle cc8">&#128564;</div><span class="cat-name">Eye Masks</span></div>
+        </div>
+    </div>
+
+    <!-- ===== Mushaira Discovery Banner ===== -->
+    <div class="mushaira-banner" onclick="goToReview()">
+        <div class="mushaira-banner-bg"></div>
+        <div class="mb-content">
+            <div class="mb-title">Ek badhiya sher sunenge?</div>
+            <div class="mb-sub">Review your recent order and unlock a sher — mushaira style!</div>
+            <button class="mb-cta" onclick="goToReview()">Irshad! &#127908;</button>
+        </div>
+        <div class="mb-mic">&#127908;</div>
+    </div>
+
+    <!-- Bottom peek -->
+    <div class="store-peek">
+        <div class="s-head">
+            <div class="s-icon">&#127873;</div>
+            <div class="s-title">Winter merch</div>
+        </div>
+        <div class="s-sub">Tap into exclusive deals just for you</div>
+    </div>
+</div>
+
+<!-- ============================================================
+     PAGE 2: REVIEW COLLECTION
+     ============================================================ -->
+<div id="review" class="page">
+    <!-- Top bar -->
+    <div class="review-topbar">
+        <div></div>
+        <button class="btn-close" onclick="goToHome()">&times;</button>
+    </div>
+
+    <!-- Hero -->
+    <div class="review-hero">
+        <div class="review-mic">&#127908;</div>
+        <div class="review-hero-title">Sher sunne ke liye<br>review kijiye</div>
+        <div class="review-hero-sub">Rate your recent order to unlock a sher</div>
+    </div>
+
+    <!-- Product -->
+    <div class="product-card">
+        <div class="product-icon">&#127890;</div>
+        <div class="product-details">
+            <div class="product-name">Scapia Voyager Backpack</div>
+            <div class="product-meta">Black &middot; 35L &middot; Ordered 3 days ago</div>
+        </div>
+    </div>
+
+    <!-- Star Ratings -->
+    <div class="ratings-area">
+        <div class="ratings-title">How would you rate your order?</div>
+        <div class="ratings-sub">Your ratings help fellow travellers</div>
+
+        <div class="rating-cards">
+            <!-- Quality -->
+            <div class="r-card" data-cat="quality">
+                <div class="r-card-top">
+                    <span class="r-card-label">Build Quality</span>
+                    <span class="r-card-icon">&#10024;</span>
+                </div>
+                <div class="stars">
+                    <span class="star" data-r="1" data-c="quality">&#9733;</span>
+                    <span class="star" data-r="2" data-c="quality">&#9733;</span>
+                    <span class="star" data-r="3" data-c="quality">&#9733;</span>
+                    <span class="star" data-r="4" data-c="quality">&#9733;</span>
+                    <span class="star" data-r="5" data-c="quality">&#9733;</span>
+                </div>
+                <div class="r-feedback" id="fb-quality"></div>
+            </div>
+
+            <!-- Delivery -->
+            <div class="r-card" data-cat="delivery">
+                <div class="r-card-top">
+                    <span class="r-card-label">Delivery Speed</span>
+                    <span class="r-card-icon">&#128666;</span>
+                </div>
+                <div class="stars">
+                    <span class="star" data-r="1" data-c="delivery">&#9733;</span>
+                    <span class="star" data-r="2" data-c="delivery">&#9733;</span>
+                    <span class="star" data-r="3" data-c="delivery">&#9733;</span>
+                    <span class="star" data-r="4" data-c="delivery">&#9733;</span>
+                    <span class="star" data-r="5" data-c="delivery">&#9733;</span>
+                </div>
+                <div class="r-feedback" id="fb-delivery"></div>
+            </div>
+
+            <!-- Price -->
+            <div class="r-card" data-cat="price">
+                <div class="r-card-top">
+                    <span class="r-card-label">Value for Money</span>
+                    <span class="r-card-icon">&#128176;</span>
+                </div>
+                <div class="stars">
+                    <span class="star" data-r="1" data-c="price">&#9733;</span>
+                    <span class="star" data-r="2" data-c="price">&#9733;</span>
+                    <span class="star" data-r="3" data-c="price">&#9733;</span>
+                    <span class="star" data-r="4" data-c="price">&#9733;</span>
+                    <span class="star" data-r="5" data-c="price">&#9733;</span>
+                </div>
+                <div class="r-feedback" id="fb-price"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Text Review -->
+    <div class="opt-section">
+        <div class="opt-row">
+            <span class="opt-label">Anything you'd like to share?</span>
+            <span class="opt-tag">Optional</span>
+        </div>
+        <textarea class="review-ta" id="textReview"
+            placeholder="The sunset from the balcony was the highlight..."
+            maxlength="500"></textarea>
+        <div class="ta-footer">
+            <div class="hint-chips">
+                <button class="hint-chip" onclick="addHint('Build Quality')">Build Quality</button>
+                <button class="hint-chip" onclick="addHint('Value for money')">Value for money</button>
+                <button class="hint-chip" onclick="addHint('Comfort')">Comfort</button>
+            </div>
+            <span class="char-ct"><span id="charCt">0</span>/500</span>
+        </div>
+    </div>
+
+    <!-- Photos -->
+    <div class="opt-section">
+        <div class="opt-row">
+            <span class="opt-label">How does it look?</span>
+            <span class="opt-tag">Optional</span>
+        </div>
+        <div class="opt-desc">Share some photos for other travellers</div>
+        <div class="up-row" id="upRow">
+            <label class="up-trigger" for="imgIn">
+                <span class="up-trigger-icon">&#128247;</span>
+                <span class="up-trigger-txt">Add</span>
+            </label>
+            <input type="file" id="imgIn" class="hidden" accept="image/*" multiple>
+        </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="submit-bar">
+        <button class="btn-submit" id="submitBtn" onclick="submitReview()">
+            Sher Sunao! &#127908;
+        </button>
+    </div>
+</div>
+
+<!-- ============================================================
+     PAGE 3: SHER REVEAL
+     ============================================================ -->
+<div id="reveal" class="page">
+    <div class="reveal-bg"></div>
+    <div class="reveal-inner">
+        <div class="reveal-tag">&#10022; YOUR SHER &#10022;</div>
+
+        <div class="sher-box" id="sherBox"></div>
+
+        <button class="btn-waah" id="waahBtn" onclick="waahWaah()">Waah Waah! &#128079;</button>
+
+        <div class="reveal-thanks">Shukriya for your review!</div>
+    </div>
+</div>
+
+<script>
+// ===== State =====
+const ratings = { quality: 0, delivery: 0, price: 0 };
+const labels = {
+    1: 'Not great',
+    2: 'Could be better',
+    3: 'It\u2019s okay',
+    4: 'Pretty good!',
+    5: 'Love it!'
+};
+
+// ===== Hindi/Urdu Shers (Funny, Travel-themed) =====
+const shers = [
+    {
+        lines: [
+            'Safar mein bag naya tha, josh bhi behad tha,',
+            'Airport pe weight dekha toh hosh udd gaye.'
+        ],
+        meaning: 'The bag was new, the excitement immense \u2014 at the airport, the weight blew my sense!'
+    },
+    {
+        lines: [
+            'Hawai ka ticket jab sasta mila yaar,',
+            'Passport expire nikla \u2014 yeh kaisa safar!'
+        ],
+        meaning: 'Got a cheap flight ticket, felt like a king \u2014 passport expired, what a sting!'
+    },
+    {
+        lines: [
+            'Bag pack karke nikle thay duniya ghoomne,',
+            'Charger bhool gaye \u2014 ab selfie kaun le?'
+        ],
+        meaning: 'Packed my bags to roam the world with glee \u2014 forgot the charger, who\'ll take the selfie?'
+    },
+    {
+        lines: [
+            'Scapia se aaya saamaan, dil khush hua,',
+            'Review deke sher bhi suna \u2014 maza aa gaya!'
+        ],
+        meaning: 'Scapia delivered goods, heart was singing \u2014 gave a review, got a sher, what a feeling!'
+    },
+    {
+        lines: [
+            'Travel ka shauq tha, budget nahi tha saath,',
+            'Scapia ne kaha fikar na kar, thaam mera haath.'
+        ],
+        meaning: 'Had the travel bug, but budget was tight \u2014 Scapia said don\'t worry, I\'ll make it right!'
+    },
+    {
+        lines: [
+            'Goa ke beach pe baitha tha sukoon se,',
+            'Bag ka zipper toota toh nikle June se!'
+        ],
+        meaning: 'Sitting on Goa beach, peaceful and free \u2014 bag zipper broke, out came June\'s laundry!'
+    },
+    {
+        lines: [
+            'Solo trip pe nikla tha chain dhundhne,',
+            'Mummy teen baar call ki \u2014 chain mar gaya.'
+        ],
+        meaning: 'Went solo to find peace of mind \u2014 mom called thrice, peace left behind.'
+    },
+    {
+        lines: [
+            'Paanch star diye bag ko, baarish mein bhi jeeta,',
+            'Itinerary nahi chala \u2014 par bag ne dil jeeta.'
+        ],
+        meaning: 'Five stars for the bag, it survived the rain \u2014 itinerary flopped, but the bag felt no pain.'
+    }
+];
+
+// ===== Navigation =====
+function navigateTo(id) {
+    const cur = document.querySelector('.page.active');
+    const next = document.getElementById(id);
+    if (cur === next) return;
+
+    // Switch body bg to match destination page
+    document.body.style.background = id === 'home' ? '#EFF3F7' : 'var(--black)';
+
+    cur.classList.add('fade-out');
+    setTimeout(() => {
+        cur.classList.remove('active', 'fade-out');
+        next.classList.add('active');
+        window.scrollTo(0, 0);
+    }, 350);
+}
+function goToReview() { navigateTo('review'); }
+function goToHome() { navigateTo('home'); }
+
+// ===== Stars =====
+document.querySelectorAll('.star').forEach(s => {
+    s.addEventListener('click', function() {
+        const cat = this.dataset.c;
+        const val = parseInt(this.dataset.r);
+        ratings[cat] = val;
+
+        const card = this.closest('.r-card');
+        card.querySelectorAll('.star').forEach(st => {
+            const r = parseInt(st.dataset.r);
+            st.classList.toggle('filled', r <= val);
+            if (r === val) {
+                st.classList.remove('pop');
+                void st.offsetWidth;
+                st.classList.add('pop');
+            }
+        });
+
+        document.getElementById('fb-' + cat).textContent = labels[val];
+        card.classList.add('rated');
+        checkSubmit();
+    });
+});
+
+function checkSubmit() {
+    const ok = ratings.quality > 0 && ratings.delivery > 0 && ratings.price > 0;
+    document.getElementById('submitBtn').classList.toggle('enabled', ok);
+}
+
+// ===== Textarea =====
+const ta = document.getElementById('textReview');
+const cc = document.getElementById('charCt');
+ta.addEventListener('input', () => { cc.textContent = ta.value.length; });
+
+function addHint(t) {
+    if (!ta.value.includes(t)) {
+        ta.value += (ta.value ? ', ' : '') + t;
+        ta.focus();
+        cc.textContent = ta.value.length;
+    }
+}
+
+// ===== Upload =====
+const imgIn = document.getElementById('imgIn');
+const upRow = document.getElementById('upRow');
+let imgs = [];
+
+imgIn.addEventListener('change', function() {
+    Array.from(this.files).forEach(f => {
+        if (imgs.length >= 3) return;
+        const r = new FileReader();
+        r.onload = e => { imgs.push(e.target.result); renderThumbs(); };
+        r.readAsDataURL(f);
+    });
+    this.value = '';
+});
+
+function renderThumbs() {
+    upRow.querySelectorAll('.thumb-w').forEach(e => e.remove());
+    imgs.forEach((src, i) => {
+        const w = document.createElement('div'); w.classList.add('thumb-w');
+        const img = document.createElement('img'); img.classList.add('thumb-i'); img.src = src;
+        const x = document.createElement('button'); x.classList.add('thumb-rm');
+        x.textContent = '\u00D7';
+        x.onclick = () => { imgs.splice(i, 1); renderThumbs(); };
+        w.appendChild(img); w.appendChild(x);
+        upRow.insertBefore(w, upRow.querySelector('.up-trigger'));
+    });
+    upRow.querySelector('.up-trigger').style.display = imgs.length >= 3 ? 'none' : 'flex';
+}
+
+// ===== Submit =====
+function submitReview() {
+    if (ratings.quality === 0 || ratings.delivery === 0 || ratings.price === 0) return;
+
+    const sher = shers[Math.floor(Math.random() * shers.length)];
+    const box = document.getElementById('sherBox');
+    box.innerHTML = '';
+
+    sher.lines.forEach((line, i) => {
+        const d = document.createElement('div');
+        d.classList.add('sher-line');
+        d.textContent = line;
+        box.appendChild(d);
+        if (i === 0) {
+            const sep = document.createElement('div');
+            sep.classList.add('sher-sep');
+            box.appendChild(sep);
+        }
+    });
+
+    if (sher.meaning) {
+        const m = document.createElement('div');
+        m.classList.add('sher-meaning');
+        m.textContent = sher.meaning;
+        box.appendChild(m);
+    }
+
+    navigateTo('reveal');
+}
+
+// ===== Waah Waah =====
+let waahN = 0;
+function waahWaah() {
+    waahN++;
+    const btn = document.getElementById('waahBtn');
+    btn.classList.add('clapped');
+
+    const emojis = ['\u{1F44F}', '\u{1F389}', '\u2728', '\u{1F31F}', '\u{1F4AB}', '\u{1F525}', '\u2764\uFE0F', '\u{1F3A4}'];
+    for (let i = 0; i < 10; i++) {
+        const p = document.createElement('div');
+        p.classList.add('particle');
+        p.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+        p.style.left = Math.random() * 80 + 10 + '%';
+        p.style.top = Math.random() * 30 + 45 + '%';
+        p.style.animationDelay = Math.random() * 0.3 + 's';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 2000);
+    }
+
+    setTimeout(() => btn.classList.remove('clapped'), 300);
+    if (waahN >= 3) btn.textContent = 'Bahut Khoob! \u{1F389}';
+}
+</script>
+</body>
+</html>
