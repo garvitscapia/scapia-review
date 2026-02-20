@@ -838,63 +838,63 @@ function randomizeProduct() {
 // ===== Shers — keyword-tagged for text-input matching =====
 const shers = [
     {
-        lines: ['Bag naya tha, josh tha, nikle thay udne ko,', 'Weight dekha airport pe \u2014 zameen pe aa gaye rone ko.'],
-        meaning: 'New bag, big dreams, ready to fly \u2014 saw the weight at the airport, wanted to cry.',
+        lines: ['Bag pack kiya poore ghar ka saamaan lekar,', 'Airport pe bola \u2014 sir, aap shift ho rahe ho kya udhar?'],
+        meaning: 'Packed the bag with my entire house \u2014 airport staff asked: "Sir, are you relocating?"',
         tags: ['bag', 'backpack', 'luggage', 'travel', 'flight', 'airport', 'heavy', 'weight']
     },
     {
-        lines: ['Sasta ticket mila toh socha ab toh maza aayega,', 'Passport expire nikla \u2014 bas sapna reh jaayega.'],
-        meaning: 'Cheap ticket in hand, thought life was grand \u2014 passport expired, trip was canned.',
+        lines: ['Sasta ticket dekh ke dil mein aayi khushi hazaar,', 'Layover nikla Dubai, Istanbul, aur Madagascar.'],
+        meaning: 'Saw a cheap ticket, heart filled with joy \u2014 layovers turned out to be Dubai, Istanbul, and Madagascar.',
         tags: ['ticket', 'cheap', 'deal', 'price', 'value', 'money', 'passport', 'flight']
     },
     {
-        lines: ['Duniya ghoomne nikle thay, bag mein bhara sab kuch,', 'Charger bhool gaye ghar pe \u2014 ab phone mara ab kuch?'],
-        meaning: 'Set off to roam the world, bag packed with care \u2014 forgot the charger at home, dead phone in despair.',
+        lines: ['Phone charge tha 100%, nikle thay masti mein,', 'Ek selfie, do reels \u2014 ab phone hai 2% mein.'],
+        meaning: 'Phone was at 100%, set out in full spirit \u2014 one selfie, two reels \u2014 now at 2%, nowhere near it.',
         tags: ['phone', 'charger', 'pack', 'forgot', 'electronics', 'headphones', 'tech']
     },
     {
-        lines: ['Scapia ka bag aaya, itna solid itna tight,', 'Dost bola mujhe de de yeh \u2014 main tujhe treat dunga tonight.'],
-        meaning: 'Scapia\'s bag arrived, so solid, so tight \u2014 friend said give it to me, I\'ll buy you dinner tonight.',
+        lines: ['Scapia ka bag dikha toh dost ne maangi selfie,', 'Mere saath nahi \u2014 sirf bag ke saath, bola it\'s more worthy.'],
+        meaning: 'Friend saw the Scapia bag, asked for a photo \u2014 not with me though, just the bag. Said it\'s the real show.',
         tags: ['quality', 'solid', 'build', 'strong', 'durable', 'great', 'amazing', 'love']
     },
     {
-        lines: ['Goa mein baarish aayi, bag bhiga nahi ekdum,', 'Main bhiga, kapde bhige, bag bola \u2014 I\'m premium.'],
-        meaning: 'Rain hit Goa, the bag stayed bone dry \u2014 I was soaked, clothes drenched, bag said "I\'m fly."',
+        lines: ['Goa mein mausam bigda, main bheega sab bheega yaar,', 'Bag se ek boond nahi giri \u2014 usne bola auqaat mein raho, baarish.'],
+        meaning: 'Storm hit Goa, I got drenched, everything ruined \u2014 bag didn\'t get a single drop, told the rain: "Know your place."',
         tags: ['rain', 'waterproof', 'goa', 'beach', 'weather', 'premium', 'quality']
     },
     {
-        lines: ['Solo trip pe nikla tha sukoon dhundhne yaar,', 'Mummy ka phone aaya \u2014 khaana khaya ki nahi, do baar.'],
-        meaning: 'Went solo to find some peace and rest \u2014 mom called twice: "Did you eat?" \u2014 she knows best.',
+        lines: ['Solo trip pe nikla sukoon dhundhne apna,', 'Group mein 47 photos aaye \u2014 bhai tu enjoy kar, humse nahi hota.'],
+        meaning: 'Went on a solo trip to find peace \u2014 family group sent 47 photos: "Enjoy for us too, we can\'t afford it."',
         tags: ['solo', 'trip', 'peace', 'relax', 'comfortable', 'comfort', 'cozy', 'soft']
     },
     {
-        lines: ['Light travel karo bola sabne mujhko baar baar,', 'Teen bag leke airport gaya \u2014 lagi fine hazaar.'],
-        meaning: 'Everyone said travel light, don\'t overpack \u2014 three bags at the airport, wallet under attack.',
+        lines: ['Light travel karunga bola, sirf zaroori cheezein,', 'Ek bag mein teen jeans, do jacket, aur poori rasoi ki cheezein.'],
+        meaning: 'Promised to travel light, only essentials \u2014 packed three jeans, two jackets, and an entire kitchen.',
         tags: ['light', 'overpack', 'size', 'big', 'small', 'compact', 'space']
     },
     {
-        lines: ['Review de diya humne, sher bhi sun liya,', 'Ab Scapia bole \u2014 waah bhai, dil jeet liya!'],
-        meaning: 'Gave the review, heard the sher too \u2014 Scapia said: waah bhai, you\'re our crew!',
+        lines: ['Review likh diya 5 star, sher bhi sunn liya,', 'Scapia ne bola \u2014 isko lifetime VIP kar diya.'],
+        meaning: 'Gave 5 stars, heard the sher too \u2014 Scapia said: "This one gets lifetime VIP, no queue."',
         tags: ['review', 'happy', 'satisfied', 'good', 'nice', 'recommend']
     },
     {
-        lines: ['Jacket pehni Scapia ki, lag gaye hero film ke,', 'Auto wale ne bhi bola \u2014 sahab, aap toh lag rahe Jim ke.'],
-        meaning: 'Wore the Scapia jacket, looked like a movie star \u2014 even the auto driver said "sir, you look like Jim from afar."',
+        lines: ['Scapia ki jacket pehni, itna swag aa gaya,', 'Kutta bhi road pe ruka \u2014 bhai, kahan se laya?'],
+        meaning: 'Wore the Scapia jacket, dripping with swag \u2014 even the street dog stopped and stared: "Where\'d you get that, bro?"',
         tags: ['jacket', 'style', 'look', 'fashion', 'cool', 'wear', 'color', 'design']
     },
     {
-        lines: ['Delivery itni fast aayi, darwaza khola hairan,', 'Pizza wala bhi sharma gaya \u2014 yeh speed hai shaitan.'],
-        meaning: 'Delivery came so fast, opened the door in shock \u2014 even the pizza guy was embarrassed by the clock.',
+        lines: ['Delivery itni jaldi aayi, order abhi diya tha,', 'Delivery boy bola \u2014 sir main toh kal ka order laaya tha.'],
+        meaning: 'Delivery came so fast, I just placed the order \u2014 delivery guy said: "Sir, this is actually yesterday\'s order."',
         tags: ['delivery', 'fast', 'quick', 'speed', 'shipping', 'early', 'time', 'arrived']
     },
     {
-        lines: ['Headphone lagaya kaan mein, duniya ho gayi mute,', 'Boss ka call miss kiya \u2014 ab salary bhi on dispute.'],
-        meaning: 'Put on headphones, the world went mute \u2014 missed the boss\'s call, now salary\'s in dispute.',
+        lines: ['Headphone lagaya kaan mein, duniya ho gayi silent,', 'Boss peeche khada tha 10 minute se \u2014 ab resume bhi kar lo update.'],
+        meaning: 'Put on headphones, world went silent, pure bliss \u2014 boss was standing behind me for 10 minutes. Time to update that resume.',
         tags: ['headphone', 'headphones', 'sound', 'music', 'audio', 'noise', 'cancel']
     },
     {
-        lines: ['Socks itne soft aaye, pair bol rahe thank you,', 'Chappal ko retirement de di \u2014 ab slippers bole boo hoo.'],
-        meaning: 'Socks so soft, my feet said thank you \u2014 gave the slippers retirement, now they\'re going boo hoo.',
+        lines: ['Socks itne soft thay, pair ne bola \u2014 bhai aur order kar,', 'Credit card bola \u2014 ek aur order kiya toh main karunga ghar se bahar.'],
+        meaning: 'Socks so soft, my feet said order more \u2014 credit card said: "One more order and I\'m moving out."',
         tags: ['socks', 'soft', 'comfortable', 'comfort', 'feet', 'cozy', 'warm']
     },
 ];
