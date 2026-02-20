@@ -132,10 +132,10 @@
             margin: 6px 20px 24px;
             background: var(--black);
             border-radius: 20px;
-            padding: 24px 22px;
+            padding: 32px 24px;
             display: flex;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
             cursor: pointer;
             transition: transform 0.2s ease;
             position: relative;
@@ -154,11 +154,11 @@
         .mb-content { flex: 1; z-index: 1; }
         .mb-title {
             font-family: 'Playfair Display', serif;
-            font-size: 18px; font-weight: 700; color: var(--cream);
-            line-height: 1.35; margin-bottom: 6px;
+            font-size: 22px; font-weight: 700; color: var(--cream);
+            line-height: 1.35; margin-bottom: 8px;
         }
         .mb-sub {
-            font-size: 12px; color: var(--gray); line-height: 1.4; margin-bottom: 14px;
+            font-size: 13px; color: var(--gray); line-height: 1.45; margin-bottom: 18px;
         }
         .mb-cta {
             display: inline-block;
@@ -172,7 +172,7 @@
         .mb-cta:active { transform: scale(0.95); }
 
         .mb-mic {
-            font-size: 52px; z-index: 1; flex-shrink: 0;
+            font-size: 60px; z-index: 1; flex-shrink: 0;
             animation: mic-bob 3s ease-in-out infinite;
         }
         @keyframes mic-bob {
@@ -437,17 +437,41 @@
         }
         @keyframes fade-in { to { opacity: 1; } }
 
-        /* Waah Waah */
+        /* Waah Waah — hero button */
         .btn-waah {
-            background: none; border: 2px solid var(--orange);
-            color: var(--orange); padding: 16px 48px;
-            font-size: 20px; font-weight: 700; border-radius: 60px;
+            background: linear-gradient(135deg, var(--orange) 0%, #D4533A 100%);
+            border: none;
+            color: var(--white); padding: 18px 56px;
+            font-size: 22px; font-weight: 800; border-radius: 60px;
             cursor: pointer; font-family: 'Inter', sans-serif;
             transition: all 0.2s ease; opacity: 0;
             animation: fade-in 0.5s ease 2.6s forwards;
+            box-shadow: 0 4px 24px rgba(232,115,74,0.35), 0 0 0 0 rgba(232,115,74,0);
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
         }
-        .btn-waah:active { transform: scale(0.92); background: var(--orange-glow); }
-        .btn-waah.clapped { background: var(--orange); color: var(--white); }
+        .btn-waah::before {
+            content: ''; position: absolute; inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 50%);
+            border-radius: 60px;
+        }
+        .btn-waah:active { transform: scale(0.93); box-shadow: 0 2px 12px rgba(232,115,74,0.4); }
+        .btn-waah.clapped {
+            background: linear-gradient(135deg, #FF8C5A 0%, var(--orange) 100%);
+            box-shadow: 0 4px 30px rgba(232,115,74,0.5), 0 0 60px rgba(232,115,74,0.15);
+        }
+
+        .btn-encore {
+            background: none; border: 1.5px solid var(--gold-dim);
+            color: var(--gold); padding: 12px 32px;
+            font-size: 14px; font-weight: 600; border-radius: 60px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: all 0.25s ease; opacity: 0;
+            animation: fade-in 0.5s ease 3s forwards;
+            letter-spacing: 0.3px;
+        }
+        .btn-encore:active { transform: scale(0.93); background: var(--gold-dim); }
 
         .particle {
             position: fixed; pointer-events: none; font-size: 40px;
@@ -770,6 +794,8 @@
         <div class="sher-box" id="sherBox"></div>
 
         <button class="btn-waah" id="waahBtn" onclick="waahWaah()">Waah Waah! &#128079;</button>
+
+        <button class="btn-encore" id="encoreBtn" onclick="newSher()">Ek Aur Sher! &#10022;</button>
 
         <div class="reveal-thanks">Shukriya for your review!</div>
     </div>
@@ -1201,6 +1227,57 @@ function waahWaah() {
     }
 
     setTimeout(() => { btn.classList.remove('clapped', 'mega-shake'); }, 500);
+}
+
+// ===== New Sher (Encore) =====
+let lastSherIdx = -1;
+function newSher() {
+    // Pick a different sher
+    let idx;
+    do { idx = Math.floor(Math.random() * shers.length); } while (idx === lastSherIdx && shers.length > 1);
+    lastSherIdx = idx;
+    const sher = shers[idx];
+
+    // Rebuild sher box with fresh animations
+    const box = document.getElementById('sherBox');
+    box.style.animation = 'none';
+    void box.offsetWidth;
+    box.innerHTML = '';
+    box.style.animation = '';
+
+    sher.lines.forEach((line, i) => {
+        const d = document.createElement('div');
+        d.classList.add('sher-line');
+        d.style.animation = 'none';
+        void d.offsetWidth;
+        d.style.animation = '';
+        d.textContent = line;
+        box.appendChild(d);
+        if (i === 0) {
+            const sep = document.createElement('div');
+            sep.classList.add('sher-sep');
+            sep.style.animation = 'none';
+            void sep.offsetWidth;
+            sep.style.animation = '';
+            box.appendChild(sep);
+        }
+    });
+
+    if (sher.meaning) {
+        const m = document.createElement('div');
+        m.classList.add('sher-meaning');
+        m.style.animation = 'none';
+        void m.offsetWidth;
+        m.style.animation = '';
+        m.textContent = sher.meaning;
+        box.appendChild(m);
+    }
+
+    // Reset Waah Waah button
+    waahN = 0;
+    const btn = document.getElementById('waahBtn');
+    btn.textContent = 'Waah Waah! \u{1F44F}';
+    btn.classList.remove('clapped', 'mega-shake');
 }
 
 // Init first product
